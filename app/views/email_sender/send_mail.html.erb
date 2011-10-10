@@ -1,0 +1,40 @@
+
+<h1><%= t('email_to_friend.tell_about', :product => @object.name) %></h1>
+
+<%= form_for(@mail_to_friend, :url => "") do |f| -%>
+  <%= render "shared/error_messages", :target => @mail_to_friend %>
+  <%= hook :send_mail_fields, {:f => f} do %>
+  <p>
+    <%= f.label(:sender_name, t('email_to_friend.sender_name')) %><br/>
+    <%= f.text_field(:sender_name) %>
+  </p>
+  <p>
+    <%= f.label(:sender_email, t('email_to_friend.sender_email')) %><br/>
+    <%= f.text_field(:sender_email) %>
+  </p>
+  <p>
+    <%= f.label(:recipient_name, t('email_to_friend.recipient_name')) %><br/>
+    <%= f.text_field(:recipient_name) %>
+  </p>
+  <p>
+    <%= f.label(:recipient_email, t('email_to_friend.recipient_email')) %><br/>
+    <%= f.text_field(:recipient_email) %>
+  </p>
+  <p>
+    <%= f.label(:message, t('email_to_friend.message')) %><br/>
+    <%= f.text_area(:message) %>
+  </p>
+  <% end %>
+	<%preferences=find_domain_preference("Captcha configuration")%>
+ <%if preferences && preferences.blank?%>
+ 
+    <%= recaptcha_tags :public_key => Spree::Captcha::Config[:public_key], :display => {:theme => Spree::Captcha::Config[:theme]} %>
+	<%else%>
+	    <%= recaptcha_tags :public_key =>preferences.select{|x|x.name=="public_key"}.map(&:value), :display => {:theme =>preferences.select{|x|x.name=="public_key"}.map(&:value) }%>
+
+	<%end%>  
+
+  <p>
+    <%= f.submit(t('email_to_friend.send_message')) %>
+  </p>
+<% end -%>

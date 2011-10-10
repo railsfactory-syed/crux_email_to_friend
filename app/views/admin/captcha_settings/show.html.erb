@@ -1,0 +1,48 @@
+<%= render 'admin/shared/configuration_menu' %>
+
+<h1><%= t("captcha.captcha_settings") %></h1>
+	  <%preferences=find_domain_preference("Captcha configuration")%>
+    <% unless preferences.present?  %>
+<table>
+  <tr>
+    <th scope="row"><%= t("captcha.public_key") %>:</th>
+    <td>Not available</td>
+  </tr>
+  <tr>
+    <th scope="row"><%= t("captcha.private_key") %>:</th>
+    <td>Not available</td>
+  </tr>
+  <tr>
+    <th scope="row"><%= t("captcha.theme") %>:</th>
+    <td>Not Available</td>
+  </tr>
+</table>
+
+<p>
+  <%= link_to_with_icon('edit', t("edit"), edit_admin_captcha_settings_path) %>
+</p>
+<%else%>
+<table>
+<%preferences.each do |preference|%>
+<% if preference.name=="public_key"%>
+ <tr>
+    <th scope="row"><%= t("captcha.public_key") %>:</th>
+    <td><%= preference.value %></td>
+  </tr>
+	<% elsif preference.name=="private_key"%>
+	 <tr>
+    <th scope="row"><%= t("captcha.private_key") %>:</th>
+    <td><%=preference.value%></td>
+  </tr>
+		<% elsif preference.name=="theme"%>
+	<tr>
+    <th scope="row"><%= t("captcha.theme") %>:</th>
+    <td><%= preference.value%></td>
+  </tr>
+<%end%>
+<%end%>
+<table>
+<p>
+  <%= link_to_with_icon('edit', t("edit"), edit_admin_captcha_settings_path) %>
+</p>
+<%end%>

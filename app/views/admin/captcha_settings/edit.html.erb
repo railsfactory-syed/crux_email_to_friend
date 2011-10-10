@@ -1,0 +1,51 @@
+<%= render  'admin/shared/configuration_menu' %>
+
+<h1><%= t("captcha.captcha_settings") %></h1>
+
+<% form_tag(admin_captcha_settings_path, :method => :put) do -%>
+  <p>
+	  <%preferences=find_domain_preference("Captcha configuration")%>
+
+<% unless preferences.present?%>
+
+
+    <label><%= t("captcha.public_key") %>:</label>
+    <%= text_field_tag('preferences[public_key]',"Specify your public key", :size => 40) %>
+  </p>
+  <p>
+    <label><%= t('captcha.private_key') %>:</label>
+    <%= text_field_tag('preferences[private_key]',"Specify your private key", :size => 40)%>
+  </p>
+  <p>
+    <label><%= t('captcha.theme') %>:</label>
+    <%= select_tag('preferences[theme]', options_for_select(CaptchaConfiguration::THEMES, Spree::Captcha::Config[:theme])) %>
+  </p>
+  
+	<%else%>
+	
+  <%preferences.each do |preference|%>
+ <% if preference.name=="public_key"%>
+ <p>
+  <label><%= t("captcha.public_key") %>:</label>
+    <%= text_field_tag('preferences[public_key]', preference.value, :size => 40) %>
+  </p>
+	  <%elsif preference.name=="private_key" %>
+		<p>
+		 <label><%= t('captcha.private_key') %>:</label>
+    <%= text_field_tag('preferences[private_key]', preference.value, :size => 40)%>
+		</p>
+			  <%elsif preference.name=="theme" %>
+  <p>
+    <label><%= t('captcha.theme') %>:</label>
+    <%= select_tag('preferences[theme]', options_for_select(CaptchaConfiguration::THEMES, Spree::Captcha::Config[:theme])) %>
+  </p>
+		<%end%>
+		<% end -%>
+	<%end%>
+  <p class="form-buttons">
+    <%= button t('update') %>
+    <%= t("or") %> <%= link_to t("cancel"), admin_captcha_settings_url %>
+  </p>
+	<%end%>
+
+
