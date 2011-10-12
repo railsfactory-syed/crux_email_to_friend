@@ -1,10 +1,13 @@
 ﻿CruxEmailToFriend
 =================
 
-This enables you to sent the product reference to your friend via email.
+CruxEmailToFriend is an extension for Spree Commerce. It is mandatory that Spree has to be installed in the system
+to add this extension. CruxEmailToFriend enables users to send product reference urls to your friend via email
+
 
 Installation
-=================
+===========
+It is mandatory that Spree has to be installed prior to the inclusion of the Extension.
 
 Start by adding the gem to your existing Rails 3.x application's Gemfile
 
